@@ -55,7 +55,7 @@ const store = MongoStore.create({
     touchAfter: 24* 3600,
 });
 
-store.on("error", () => {
+store.on("error", (err) => {
     console.log("ERROR IN MONGO SESSION STORE",err);
 });
 
@@ -104,9 +104,10 @@ app.all("/*splat",(req, res, next) => {
 app.use ((err, req, res, next) => {
     let {statusCode=500, message="something went wrong!"} = err;
     res.status(statusCode).render("error.ejs",{message});
-    // res.status(statusCode).send(message);
 });
 
-app.listen(8080,() => {
-    console.log('Server is running on port 8080');
-}  );
+const port = process.env.PORT || 8080;
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
